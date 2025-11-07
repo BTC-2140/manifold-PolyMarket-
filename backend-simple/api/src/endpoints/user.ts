@@ -10,7 +10,7 @@ const router = Router()
 // POST /createuser - Create new user account
 router.post('/createuser', async (req: Request, res: Response) => {
   try {
-    // Authenticate with Firebase
+    // Authenticate with Supabase
     const authedUser = await authenticateRequest(req)
     const userId = authedUser.uid
 

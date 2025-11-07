@@ -131,7 +131,7 @@ export async function giveSignupBonus(userId: string): Promise<Txn> {
 }
 
 // Helper: Process mana purchase
-export async function processMana Purchase(
+export async function processManaPurchase(
   userId: string,
   amount: number,
   data?: Record<string, any>
