@@ -18,7 +18,7 @@ This is a **simplified version** of the Manifold Markets backend, designed for r
 - **Framework:** Express 4.18.1
 - **Language:** TypeScript 5.3.2
 - **Database:** PostgreSQL (Supabase)
-- **Authentication:** Firebase Admin SDK
+- **Authentication:** Supabase Auth
 - **Process Manager:** PM2
 
 ### Folder Structure
@@ -33,9 +33,9 @@ backend-simple/
 │   │   │   ├── browse.ts    # Search & leaderboard
 │   │   │   └── engagement.ts # Comments & reactions
 │   │   ├── helpers/
-│   │   │   ├── auth.ts      # Firebase authentication
-│   │   │   ├── db.ts        # Database queries
-│   │   │   └── validate.ts  # Zod validation
+│   │   │   ├── supabase-auth.ts  # Supabase authentication
+│   │   │   ├── db.ts             # Database queries
+│   │   │   └── validate.ts       # Zod validation
 │   │   ├── utils/
 │   │   │   ├── cpmm.ts      # Market maker calculations
 │   │   │   ├── txn.ts       # Transaction processing
@@ -52,8 +52,8 @@ backend-simple/
 
 ### Prerequisites
 - Node.js 20+
-- PostgreSQL database (Supabase recommended)
-- Firebase project with Admin SDK credentials
+- PostgreSQL database (Supabase)
+- Supabase project with Auth enabled
 
 ### 1. Install Dependencies
 ```bash
@@ -72,15 +72,12 @@ Edit `.env` with your credentials:
 PORT=8080
 NODE_ENV=development
 
-# Firebase
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_CLIENT_EMAIL=your-service-account@project.iam.gserviceaccount.com
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-
-# Database
-DATABASE_URL=postgresql://user:password@host:5432/database
-SUPABASE_KEY=your-supabase-anon-key
+# Supabase (Authentication + Database)
 SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your-supabase-service-role-key
+
+# Database (Direct Connection)
+DATABASE_URL=postgresql://user:password@host:5432/database
 
 # App Config
 STARTING_BALANCE=1000
@@ -122,7 +119,7 @@ Health check: http://localhost:8080/health
 ### Authentication
 All authenticated endpoints require `Authorization` header:
 ```
-Authorization: Bearer <firebase-jwt-token>
+Authorization: Bearer <supabase-jwt-token>
 ```
 
 Or API key:
@@ -234,15 +231,15 @@ npm run type-check   # Type checking only
 # Health check
 curl http://localhost:8080/health
 
-# Create user (requires Firebase token)
+# Create user (requires Supabase token)
 curl -X POST http://localhost:8080/createuser \
-  -H "Authorization: Bearer YOUR_FIREBASE_TOKEN" \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"username": "alice", "name": "Alice"}'
 
 # Create market
 curl -X POST http://localhost:8080/market \
-  -H "Authorization: Bearer YOUR_FIREBASE_TOKEN" \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "question": "Will it rain tomorrow?",
@@ -252,7 +249,7 @@ curl -X POST http://localhost:8080/market \
 
 # Place bet
 curl -X POST http://localhost:8080/bet \
-  -H "Authorization: Bearer YOUR_FIREBASE_TOKEN" \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "contractId": "abc123",
@@ -358,7 +355,7 @@ pm2 logs manifold-backend-simple --lines 100
 
 ## 🛡️ Security
 
-- ✅ Firebase JWT validation
+- ✅ Supabase JWT validation
 - ✅ Row-level security (RLS) on database
 - ✅ Input validation with Zod
 - ✅ SQL injection protection (parameterized queries)
@@ -385,15 +382,15 @@ psql $DATABASE_URL -c "SELECT 1"
 curl https://status.supabase.com
 ```
 
-### Firebase auth errors
+### Supabase auth errors
 ```bash
 # Verify credentials
-echo $FIREBASE_PROJECT_ID
-echo $FIREBASE_CLIENT_EMAIL
+echo $SUPABASE_URL
+echo $SUPABASE_SERVICE_KEY
 
-# Test token
+# Test token (get from Supabase Auth)
 curl -X GET http://localhost:8080/me \
-  -H "Authorization: Bearer YOUR_TOKEN"
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN"
 ```
 
 ### Port already in use
@@ -410,7 +407,7 @@ sudo kill -9 <PID>
 ## 🎉 Success Metrics
 
 MVP is complete when users can:
-- ✅ Sign up with Firebase
+- ✅ Sign up with Supabase Auth
 - ✅ Create binary markets
 - ✅ Place bets (YES/NO)
 - ✅ Sell shares

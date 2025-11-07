@@ -1,24 +1,36 @@
 import { Request } from 'express'
-import * as admin from 'firebase-admin'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-// Initialize Firebase Admin SDK
-let firebaseInitialized = false
+// Supabase client instance
+let supabaseClient: SupabaseClient | null = null
 
-export function initializeFirebase() {
-  if (firebaseInitialized) return
+export function initializeSupabase() {
+  if (supabaseClient) return supabaseClient
 
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+  const supabaseUrl = process.env.SUPABASE_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: privateKey,
-    }),
+  if (!supabaseUrl || !supabaseServiceKey) {
+    throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY environment variables')
+  }
+
+  supabaseClient = createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
   })
 
-  firebaseInitialized = true
-  console.log('✅ Firebase Admin SDK initialized')
+  console.log('✅ Supabase client initialized')
+  return supabaseClient
+}
+
+export function getSupabase(): SupabaseClient {
+  if (!supabaseClient) {
+    throw new Error('Supabase not initialized. Call initializeSupabase() first.')
+  }
+  return supabaseClient
 }
 
 // Types
@@ -29,7 +41,12 @@ export type AuthedUser = {
 
 type JwtCredentials = {
   kind: 'jwt'
-  data: admin.auth.DecodedIdToken
+  data: {
+    user_id: string
+    email?: string
+    aud: string
+    exp: number
+  }
 }
 
 type KeyCredentials = {
@@ -67,15 +84,32 @@ export async function parseCredentials(req: Request): Promise<Credentials> {
   switch (scheme) {
     case 'Bearer': {
       if (payload === 'undefined' || !payload) {
-        throw new APIError(401, 'Firebase JWT payload undefined.')
+        throw new APIError(401, 'JWT payload undefined.')
       }
 
       try {
-        const auth = admin.auth()
-        const decodedToken = await auth.verifyIdToken(payload)
-        return { kind: 'jwt', data: decodedToken }
+        const supabase = getSupabase()
+
+        // Verify JWT token with Supabase
+        const { data, error } = await supabase.auth.getUser(payload)
+
+        if (error || !data.user) {
+          console.error('Error verifying Supabase JWT:', error)
+          throw new APIError(401, 'Invalid or expired token.')
+        }
+
+        return {
+          kind: 'jwt',
+          data: {
+            user_id: data.user.id,
+            email: data.user.email,
+            aud: data.user.aud || 'authenticated',
+            exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now
+          },
+        }
       } catch (err) {
-        console.error('Error verifying Firebase JWT:', err)
+        if (err instanceof APIError) throw err
+        console.error('Error verifying JWT:', err)
         throw new APIError(401, 'Invalid or expired token.')
       }
     }

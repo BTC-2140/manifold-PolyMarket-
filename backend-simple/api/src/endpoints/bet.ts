@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express'
-import { authenticateRequest, APIError } from '../helpers/auth'
+import { authenticateRequest, APIError } from '../helpers/supabase-auth'
 import { queries, getDatabase } from '../helpers/db'
 import { validate, schemas } from '../helpers/validate'
 import { randomId, parseJsonData, shouldIncrementUniqueBettors } from '../utils/helpers'

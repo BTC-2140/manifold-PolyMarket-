@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { config } from 'dotenv'
-import { initializeFirebase } from './helpers/auth'
+import { initializeSupabase } from './helpers/supabase-auth'
 import { initializeDatabase } from './helpers/db'
 
 // Load environment variables
@@ -66,8 +66,8 @@ async function initialize() {
   try {
     console.log('🚀 Starting Manifold Backend (Simplified)...')
 
-    // Initialize Firebase
-    initializeFirebase()
+    // Initialize Supabase
+    initializeSupabase()
 
     // Initialize Database
     initializeDatabase()
