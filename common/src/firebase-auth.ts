@@ -1,3 +1,8 @@
+// ⚠️ FIREBASE LEGADO - NÃO USAR EM NOVOS DESENVOLVIMENTOS
+// Este arquivo é do projeto Manifold Markets original.
+// Para MVP Angola, use: backend-simple/api/src/helpers/supabase-auth.ts
+// Veja: FIREBASE_LEGACY_STATUS.md
+
 import { FirebaseApp } from '@firebase/app'
 import {
   Auth as FirebaseAuth,

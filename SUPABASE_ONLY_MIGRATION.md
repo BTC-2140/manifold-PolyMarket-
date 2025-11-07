@@ -25,6 +25,15 @@
 - ✅ .env.example atualizado com variáveis Supabase
 - ✅ Guias de deployment atualizados
 
+**Arquivos Legados (Não Migrados - OK para MVP):**
+- ⚠️ Pasta `common/` contém Firebase do projeto Manifold original
+  - **Impacto:** ZERO - backend-simple não usa estes arquivos
+  - **Ação:** Avisos adicionados, documentação criada
+- ⚠️ Pasta `web/lib/firebase/` mantida para referência
+  - **Impacto:** Baixo - novos desenvolvimentos usam `web/lib/supabase/`
+  - **Ação:** Avisos adicionados nos arquivos
+- ✅ Documentação: `FIREBASE_LEGACY_STATUS.md` e `common/README_FIREBASE.md`
+
 ---
 
 ## 📝 Documentação Original (Para Referência)

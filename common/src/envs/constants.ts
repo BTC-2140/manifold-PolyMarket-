@@ -1,3 +1,8 @@
+// ⚠️ FIREBASE LEGADO - Projeto Manifold Markets Original
+// FIREBASE_CONFIG neste arquivo NÃO é usado pelo backend-simple (MVP Angola)
+// Para MVP, use variáveis de ambiente: SUPABASE_URL, SUPABASE_SERVICE_KEY
+// Veja: FIREBASE_LEGACY_STATUS.md
+
 import { escapeRegExp } from 'lodash'
 import { DEV_CONFIG } from './dev'
 import { EnvConfig, PROD_CONFIG } from './prod'
