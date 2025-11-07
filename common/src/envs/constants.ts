@@ -1,13 +1,12 @@
-// ⚠️ FIREBASE LEGADO - Projeto Manifold Markets Original
-// FIREBASE_CONFIG neste arquivo NÃO é usado pelo backend-simple (MVP Angola)
-// Para MVP, use variáveis de ambiente: SUPABASE_URL, SUPABASE_SERVICE_KEY
-// Veja: FIREBASE_LEGACY_STATUS.md
+// ✅ 100% SUPABASE - Projeto Angola MVP
+// SUPABASE_CONFIG para autenticação e database
+// Veja: SUPABASE_ONLY_MIGRATION.md
 
 import { escapeRegExp } from 'lodash'
 import { DEV_CONFIG } from './dev'
 import { EnvConfig, PROD_CONFIG } from './prod'
 
-export const ENV = (process.env.NEXT_PUBLIC_FIREBASE_ENV ?? 'PROD') as
+export const ENV = (process.env.NEXT_PUBLIC_ENV ?? 'PROD') as
   | 'PROD'
   | 'DEV'
 
@@ -51,11 +50,11 @@ export function isSweepstakesModId(id: string) {
   return SWEEPSTAKES_MOD_IDS.includes(id)
 }
 export const DOMAIN = ENV_CONFIG.domain
-export const FIREBASE_CONFIG = ENV_CONFIG.firebaseConfig
-export const PROJECT_ID = ENV_CONFIG.firebaseConfig.projectId
+export const SUPABASE_CONFIG = ENV_CONFIG.supabaseConfig
+export const PROJECT_ID = ENV_CONFIG.supabaseConfig.projectId
 export const IS_PRIVATE_MANIFOLD = ENV_CONFIG.visibility === 'PRIVATE'
 
-export const AUTH_COOKIE_NAME = `FBUSER_${PROJECT_ID.toUpperCase().replace(
+export const AUTH_COOKIE_NAME = `SBUSER_${PROJECT_ID.toUpperCase().replace(
   /-/g,
   '_'
 )}`

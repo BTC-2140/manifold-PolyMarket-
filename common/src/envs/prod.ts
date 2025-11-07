@@ -1,6 +1,6 @@
 export type EnvConfig = {
   domain: string
-  firebaseConfig: FirebaseConfig
+  supabaseConfig: SupabaseConfig
   amplitudeApiKey: string
   supabaseInstanceId: string
   supabaseAnonKey: string
@@ -34,16 +34,11 @@ export type EnvConfig = {
   }
 }
 
-type FirebaseConfig = {
-  apiKey: string
-  authDomain: string
+type SupabaseConfig = {
+  url: string
+  anonKey: string
   projectId: string
   region?: string
-  storageBucket: string
-  privateBucket: string
-  messagingSenderId: string
-  appId: string
-  measurementId: string
 }
 
 export const PROD_CONFIG: EnvConfig = {
@@ -53,16 +48,12 @@ export const PROD_CONFIG: EnvConfig = {
   supabaseAnonKey:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4aWRyZ2thdHVtbHZmcWF4Y2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5OTUzOTgsImV4cCI6MTk4NDU3MTM5OH0.d_yYtASLzAoIIGdXUBIgRAGLBnNow7JG2SoaNMQ8ySg',
   googleAnalyticsId: 'GTM-MLMPXHJ6',
-  firebaseConfig: {
-    apiKey: 'AIzaSyDp3J57vLeAZCzxLD-vcPaGIkAmBoGOSYw',
-    authDomain: 'mantic-markets.firebaseapp.com',
-    projectId: 'mantic-markets',
-    region: 'us-central1',
-    storageBucket: 'mantic-markets.appspot.com',
-    privateBucket: 'mantic-markets-private',
-    messagingSenderId: '128925704902',
-    appId: '1:128925704902:web:f61f86944d8ffa2a642dc7',
-    measurementId: 'G-SSFK1Q138D',
+  supabaseConfig: {
+    url: 'https://pxidrgkatumlvfqaxcll.supabase.co',
+    anonKey:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4aWRyZ2thdHVtbHZmcWF4Y2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5OTUzOTgsImV4cCI6MTk4NDU3MTM5OH0.d_yYtASLzAoIIGdXUBIgRAGLBnNow7JG2SoaNMQ8ySg',
+    projectId: 'pxidrgkatumlvfqaxcll',
+    region: 'us-east-1',
   },
   twitchBotEndpoint: 'https://twitch-bot.manifold.markets',
   apiEndpoint: 'api.manifold.markets',

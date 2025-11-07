@@ -4,16 +4,12 @@ export const DEV_CONFIG: EnvConfig = {
   ...PROD_CONFIG,
   domain: 'dev.manifold.markets',
   googleAnalyticsId: '',
-  firebaseConfig: {
-    apiKey: 'AIzaSyBoq3rzUa8Ekyo3ZaTnlycQYPRCA26VpOw',
-    authDomain: 'dev-mantic-markets.firebaseapp.com',
-    projectId: 'dev-mantic-markets',
-    region: 'us-central1',
-    storageBucket: 'dev-mantic-markets.appspot.com',
-    privateBucket: 'dev-mantic-markets-private',
-    messagingSenderId: '134303100058',
-    appId: '1:134303100058:web:27f9ea8b83347251f80323',
-    measurementId: 'G-YJC9E37P37',
+  supabaseConfig: {
+    url: 'https://mfodonznyfxllcezufgr.supabase.co',
+    anonKey:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mb2RvbnpueWZ4bGxjZXp1ZmdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njc5ODgxNjcsImV4cCI6MTk4MzU2NDE2N30.RK8CA3G2_yccgiIFoxzweEuJ2XU5SoB7x7wBzMKitvo',
+    projectId: 'mfodonznyfxllcezufgr',
+    region: 'us-central-1',
   },
   cloudRunId: 'w3txbmd3ba',
   cloudRunRegion: 'uc',
