@@ -15,12 +15,10 @@ export const loginWithApple = supabaseSignInWithApple
 export const firebaseLogout = supabaseSignOut
 
 // Auth instance (for API compatibility)
-export const auth = {
+import type { Auth } from './auth'
+
+export const auth: Auth = {
   currentUser: null as any,
-  onAuthStateChanged: (callback: (user: any) => void) => {
-    getCurrentUser().then(callback)
-    return () => {}
-  },
 }
 
 // User type (re-export from common for compatibility)

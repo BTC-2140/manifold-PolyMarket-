@@ -1,7 +1,7 @@
 'use client'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { pickBy } from 'lodash'
-import { onIdTokenChanged, User as FirebaseUser } from 'firebase/auth'
+import { onIdTokenChanged, User as FirebaseUser } from 'web/lib/firebase/auth'
 import { auth, firebaseLogout } from 'web/lib/firebase/users'
 import { createUser } from 'web/lib/api/api'
 import { randomString } from 'common/util/random'
